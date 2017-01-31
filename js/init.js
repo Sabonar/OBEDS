@@ -1,11 +1,20 @@
-(function($){
-  $(function(){
+function CopyToClipboard(start) {
+if (document.selection) { 
+    var range = document.body.createTextRange();
+    range.moveToElementText(document.getElementById(start));
+    range.select().createTextRange();
+    document.execCommand("Copy"); 
+    //range.select();
 
-    $('.button-collapse').sideNav();
-    $('.parallax').parallax();
+} else if (window.getSelection) {
+    var range = document.createRange();
+     range.selectNode(document.getElementById(start));
+     window.getSelection().addRange(range);
+     document.execCommand("Copy");
+     //range.select();
+     //alert("text copied");
+}}
 
-  }); // end of document ready
-})(jQuery); // end of jQuery name space
 
 
 var ii = 0;
@@ -19,7 +28,13 @@ function calcPrice(order){
 	return total;
 }
 
-	 $(document).ready(function(){
+ $(document).ready(function(){
+ 	$('#order').on('click',function(){
+		CopyToClipboard('highlight');
+		Materialize.toast('Скопировано в буфер обмена :-)', 1500)
+
+	})
+
 
 });
     
@@ -108,5 +123,6 @@ $('.collection-item').on('click',function(event){
 
 	})	
 });
+
 
 

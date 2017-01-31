@@ -1,4 +1,6 @@
-
+#highlight{
+  cursor: pointer;
+}
 .container{
   max-width: 800px;
 }
@@ -27,7 +29,8 @@
   width: 400px;
 }
 #order::after{
-  display: block;
+  display:inline-block;
+  text-decoration: none;
   position: absolute;
   right:65px;
   margin-top: 0px;
