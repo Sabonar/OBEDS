@@ -106,8 +106,12 @@ rows.forEach(function(item,i,arr){
 
 for (var cat in menu)
 {	
+	menu[cat].sort(function(a, b) {
+    	return a.price - b.price;
+	})
 	menu[cat].forEach(function(item,i,arr){
-		$('#'+cat+' .collection').append('<a href="javascript:void(0)"  data-cat = "'+cat+'" data-id ="'+i+'" data-price="'+item.price+'" class="collection-item"><span class="new badge">'+item.price+'</span>'+item.dishName+'</a>');
+		color = item.price>150?"red darken-1":(item.price>100?"orange darken-1":"");
+		$('#'+cat+' .collection').append('<a href="javascript:void(0)"  data-cat = "'+cat+'" data-id ="'+i+'" data-price="'+item.price+'" class="collection-item"><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
 	})
 }
 
@@ -118,7 +122,7 @@ var summary = $('#order .row #summary');
 $('.collection-item').on('click',function(event){
 	$('#order').fadeIn('slow');
 	var test = $(event.target);
-	order.append('<div class="order_element" id="el'+(ii++)+'"><div class=" col s8 ">'+test.clone().children().remove().end().text()+'</div><div class=" col s4 ">'+test.data().price+'</div></div>');
+	order.append('<div class="order_element" id="el'+(ii++)+'"><div class=" col s8 ">'+test.clone().children().remove().end().text()+': </div><div class=" col s4 ">'+test.data().price+'</div></div>');
 	total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 
 	})	

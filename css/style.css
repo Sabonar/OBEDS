@@ -5,15 +5,18 @@
   max-width: 800px;
 }
 #tabs{
+  width: 100%;
+  max-width: 800px;
+  overflow-x: scroll;
   top:0;
   position: fixed;
   z-index: 2;
 }
   .data_holder{
-    margin-top:41px;
+    margin-top:50px;
     //min-height: 500px;
     max-width: 800px;
-    overflow-y: scroll;
+    //overflow-y: scroll;
   }     
 
 ::-webkit-scrollbar { 
@@ -27,6 +30,15 @@
   padding: 10px;
   margin: 50px;
   width: 400px;
+}
+#order::before{
+  display:inline-block;
+  text-decoration: none;
+  //position: absolute;
+  margin-left:10px;
+  font-weight: bold;
+  margin-bottom: 50px;
+  content: "Кликни, чтобы скопировать";
 }
 #order::after{
   display:inline-block;
@@ -43,3 +55,16 @@
   overflow: hidden;
 }
 
+.main{
+  color:#20805E!important;
+}
+.bad{
+  background-color:#BF5E30!important;
+}
+.good{
+  background-color:#2E3983!important;
+}
+.normal
+{
+  background-color:#8BB42D!important;
+}
