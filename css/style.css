@@ -59,28 +59,28 @@ body{
   font-weight: normal;
 }
 .i_salads::before{
-  content:url('img/salad.png');
+  content:url('../img/salad.png');
 }
 .i_soups::before{
-  content:url('img/soup.png');
+  content:url('../img/soup.png');
 }
 .i_heats::before{
-  content:url('img/steak.png');
+  content:url('../img/steak.png');
 }
 .i_garnish::before{
-  content:url('img/rice.png');
+  content:url('../img/rice.png');
 }
 .i_deserts::before{
-  content:url('img/cake.png');
+  content:url('../img/cake.png');
 }
 .i_snacks::before{
-  content:url('img/tomato.png');
+  content:url('../img/tomato.png');
 }
 .i_sandwiches::before{
-  content:url('img/taco.png');
+  content:url('../img/taco.png');
 }
 .i_breakfest::before{
-  content:url('img/breakfast.png');
+  content:url('../img/breakfast.png');
 }
 
 
