@@ -1,21 +1,108 @@
-#highlight{
+body{
+  background-color: #f1f2f6;
+}
+.podnos{
   cursor: pointer;
 }
-.container{
-  max-width: 800px;
+.refresh_button{
+  
 }
-#tabs{
+.main{
+  margin-top:15px;
+  min-width: 1300px;
+}
+#logo-container
+{
+  color:#656d78;
+}
+.collection{
+  margin-top: 0;
+}
+.tabs .tab {
+  display: block;
+  text-align: left;
+}
+@media only screen and (max-width: 992px){
+  .tabs {
+    display: block;
+    text-align: left;
+  }
+}
+.tabs .indicator {
+  display: none;
+
+}
+.tab .active{
+  background-color: #FFDAB9!important;
+}
+#tabs_title::after{
+  content: "";
+  display: block;
   width: 100%;
-  max-width: 800px;
+  height: 1px;
+  //border-radius: 50%;
+  //vertical-align: middle;
+  background: #e6e9ed;
+}
+
+.tab a::before{
+  position: relative;
+  font-size: 36px;
+  line-height: 1em;
+  //color: #00bff3;
+  //position: absolute;
+  top:7px;
+  right: 7px;
+  //left: 15px;
+  //bottom: 20px;
+  margin-top: 5px;
+  font-weight: normal;
+}
+.i_salads::before{
+  content:url('/../img/salad.png');
+}
+.i_soups::before{
+  content:url('/../img/soup.png');
+}
+.i_heats::before{
+  content:url('/../img/steak.png');
+}
+.i_garnish::before{
+  content:url('/../img/rice.png');
+}
+.i_deserts::before{
+  content:url('/../img/cake.png');
+}
+.i_snacks::before{
+  content:url('/../img/tomato.png');
+}
+.i_sandwiches::before{
+  content:url('/../img/taco.png');
+}
+.i_breakfest::before{
+  content:url('/../img/breakfast.png');
+}
+
+
+
+#tabs{
+  box-shadow: 0 0 2px #ccd0d9;
+  background-color: white;
+  min-width: 100px;
+  float:left;
+  //width: 100%;
+  //width: 150px;
+  height: auto;
   overflow-x: scroll;
   top:0;
-  position: fixed;
-  z-index: 2;
+  //position: fixed;
+  z-index: 100;
 }
   .data_holder{
-    margin-top:50px;
+    float: left;
+    //margin-top:50px;
     //min-height: 500px;
-    max-width: 800px;
+    //min-width: 600px;
     //overflow-y: scroll;
   }     
 
@@ -25,29 +112,22 @@
 
 #order {
   display: none;
-  position: fixed;
+  //position: fixed;
   right: 0;
-  padding: 10px;
-  margin: 50px;
+  /*padding: 10px;
+  margin: 50px;*/
   width: 400px;
 }
 #order::before{
   display:inline-block;
   text-decoration: none;
   //position: absolute;
-  margin-left:10px;
+  //margin-left:10px;
   font-weight: bold;
   margin-bottom: 50px;
-  content: "Кликни, чтобы скопировать";
+  content: "Кликни на поднос, чтобы скопировать";
 }
-#order::after{
-  display:inline-block;
-  text-decoration: none;
-  position: absolute;
-  right:65px;
-  margin-top: 0px;
-  content: url("../img/hand.png");
-}
+
 .order_element{
   width: auto;
   height: auto;
@@ -55,16 +135,7 @@
   overflow: hidden;
 }
 
-.main{
-  color:#20805E!important;
-}
-.bad{
-  background-color:#BF5E30!important;
-}
-.good{
-  background-color:#2E3983!important;
-}
-.normal
-{
-  background-color:#8BB42D!important;
+#highlight{
+  box-shadow: 0 0 2px #ccd0d9;
+  background-color: white;
 }

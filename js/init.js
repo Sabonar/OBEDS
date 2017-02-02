@@ -29,7 +29,7 @@ function calcPrice(order){
 }
 
  $(document).ready(function(){
- 	$('#order').on('click',function(){
+ 	$('.podnos').on('click',function(){
 		CopyToClipboard('highlight');
 		Materialize.toast('Скопировано в буфер обмена :-)', 1500)
 
@@ -57,6 +57,7 @@ var cur = "";
 rows.forEach(function(item,i,arr){
 	elem 	= item['gsx$меню']['$t'];
 	pr 		= item['gsx$цена']['$t'];
+	com 	= item['gsx$коммент']['$t'];
 	switch(elem.toLowerCase())
 	{
 		case 'салаты:':
@@ -94,7 +95,8 @@ rows.forEach(function(item,i,arr){
 	{
 		menu[cur].push({ 
 			dishName:elem,
-			price:pr 
+			price:pr,
+			comment: com
 		}); 
 	}
 
@@ -111,9 +113,10 @@ for (var cat in menu)
 	})
 	menu[cat].forEach(function(item,i,arr){
 		color = item.price>150?"red darken-1":(item.price>100?"orange darken-1":"");
-		$('#'+cat+' .collection').append('<a href="javascript:void(0)"  data-cat = "'+cat+'" data-id ="'+i+'" data-price="'+item.price+'" class="collection-item"><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
+		$('#'+cat+' .collection').append('<a href="javascript:void(0)" data-position="right"  data-tooltip="'+item.comment+'"  data-cat = "'+cat+'" data-id ="'+i+'" data-price="'+item.price+'"  class="collection-item '+(item.comment!=""?'tooltipped':'')+'"><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
 	})
 }
+$('.tooltipped').tooltip({delay: 50});
 
 var order = $('#order .row #list');
 var total = $('#order .row #summary');
@@ -122,6 +125,7 @@ var summary = $('#order .row #summary');
 $('.collection-item').on('click',function(event){
 	$('#order').fadeIn('slow');
 	var test = $(event.target);
+
 	order.append('<div class="order_element" id="el'+(ii++)+'"><div class=" col s8 ">'+test.clone().children().remove().end().text()+': </div><div class=" col s4 ">'+test.data().price+'</div></div>');
 	total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 
