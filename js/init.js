@@ -165,7 +165,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 	$('.collection-item').on('click',function(event){
 		$('#order').fadeIn('slow');
 		var test = $(this);
-		order.append('<div class="order_element" data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">'+test.clone().children().remove().end().text()+' (ID = '+test.data().id+' )'+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
+		order.append('<div class="order_element" data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">'+test.clone().children().remove().end().text()+' (ID = '+test.data().id+')'+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
 		total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 		$('.close').unbind('click').on('click',function(){
 			//console.log($(this).parent());
