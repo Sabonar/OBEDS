@@ -99,14 +99,10 @@ body{
   //position: fixed;
   z-index: 100;
 }
-.data_holder{
-  height: 950px;
-  //overflow-y: scroll;
-  //float: left;
-}     
+    
 .collection{
   overflow-y: scroll;
-  max-height: 950px;
+  max-height: 850px;
 }
 ::-webkit-scrollbar {
 
