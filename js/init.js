@@ -33,7 +33,7 @@ var menu = {
 function calcPrice(order){
 	var total = 0;
 	$(order).find('.dishprice').map(function(){total +=parseInt(this.textContent); return parseInt(this.textContent);});
-	//if (total == 0) $('#order').fadeOut('slow');
+	if (total == 0)	$('#summary').html('');
 	return total;
 }
 
