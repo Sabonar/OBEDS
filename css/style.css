@@ -2,11 +2,10 @@ body{
   background-color: #f1f2f6;
 }
 .podnos{
+  text-align: center;
   cursor: pointer;
 }
-.refresh_button{
 
-}
 .main{
   margin-top:15px;
   min-width: 1300px;
@@ -107,7 +106,7 @@ body{
 }
 
 #order {
-  display: none;
+  //display: none;
   right: 0;
   width: 400px;
 }
@@ -116,7 +115,7 @@ body{
   text-decoration: none;
   font-weight: bold;
   margin-bottom: 50px;
-  content: "Кликни на поднос, чтобы скопировать";
+  content: "Сформируй обед и кликни на поднос (:";
 }
 
 .order_element{
@@ -125,8 +124,62 @@ body{
   position: relative;
   overflow: hidden;
 }
+.order_element:hover{
+  background-color: rgba(255, 0, 0, 0.1);
+}
 
 #highlight{
   box-shadow: 0 0 2px #ccd0d9;
   background-color: white;
+}
+
+.close{
+  background-image: url(../img/cancel.png);
+  background-repeat: no-repeat;
+  height: 22px;
+  overflow: hidden;
+  background-position: center;
+  cursor: pointer;
+
+
+}
+
+.refresh{
+  cursor: pointer; 
+  background-image: url(../img/refresh.png);
+  background-repeat: no-repeat;
+  height: 22px;
+  overflow: hidden;
+  background-position: center;
+
+}
+
+.delete_all{
+  width: 64px;
+  cursor: pointer; 
+  background-image: url(../img/number.png);
+  background-repeat: no-repeat;
+  height: 64px;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-bottom: 12px;
+}
+.random_all{
+  width: 64px;
+  cursor: pointer; 
+  background-image: url(../img/shuffle.png);
+  background-repeat: no-repeat;
+  height: 64px;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-bottom: 12px;
+}
+
+.delete_all:hover{
+  background-color: rgba(255, 0, 0, 0.2);
+  border-radius: 32px;
+}
+.random_all:hover{
+  background-color: rgba(0, 255, 0, 0.2);
+  border-radius: 32px;
 }

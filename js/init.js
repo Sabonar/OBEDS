@@ -18,13 +18,22 @@ if (document.selection) {
 
 
 var ii = 0;
+var menu = {
+		heats			:[],
+		salads 			:[],
+		snacks 			:[],
+		breakfest		:[],
+		soups 			:[],			
+		garnish 		:[],
+		deserts 		:[],
+		sandwiches		:[],
+		rolls			:[]
+	};
 
-function delete_el(order,i){
-	order.find('#el'+i).remove();
-}
 function calcPrice(order){
 	var total = 0;
-	$(order).find('.s4').map(function(){total +=parseInt(this.textContent); return parseInt(this.textContent);});
+	$(order).find('.dishprice').map(function(){total +=parseInt(this.textContent); return parseInt(this.textContent);});
+	//if (total == 0) $('#order').fadeOut('slow');
 	return total;
 }
 
@@ -33,103 +42,145 @@ function calcPrice(order){
 		CopyToClipboard('highlight');
 		Materialize.toast('Скопировано в буфер обмена :-)', 1500)
 
-	})
+	});
+	$('.delete_all').on('click',function(){
+		$('#list').html('');
+		$('#summary').html('');
+		//$('#order').fadeOut('slow');
+	});
+	$('.random_all').on('click',function(){
+
+		$('.delete_all').click();
+		var cats = ['salads','soups','heats','garnish'];
+		cats.forEach(function(item){
+			el = menu[item][Math.floor((Math.random() * menu[item].length))];
+			el = menu[item][Math.floor((Math.random() * menu[item].length))];
+			var order = $('#order .row #list');
+			var total = $('#order .row #summary');
+			order.append('<div class="order_element" data-cat="'+item+'" data-id="'+el.id+'"><div class="col s8 dishname">'+el.dishName+' (ID = '+el.id+'): </div><div class="col s2 dishprice">'+el.price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
+			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
+			$('.close').unbind('click').on('click',function(){
+				//console.log($(this).parent());
+				$(this).parent().remove();
+				total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
+
+			});
+
+			$('.refresh').on('click',function(){
+				cat = $(this).parent().data().cat;
+				el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
+				$(this).parent().find('.dishprice').html(el.price);
+				$(this).parent().find('.dishname').html(el.dishName);
+			});
+
+
+		});
+		
+		
+	});
+
+
+	
 
 
 });
     
 $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9bfcSIBuXsuhJjVR6lGs/od6/public/values?alt=json", function(data) {
 	//first row "title" column
-rows = data.feed.entry;
-var menu = {
-	heats			:[],
-	salads 			:[],
-	snacks 			:[],
-	breakfest		:[],
-	soups 			:[],			
-	garnish 		:[],
-	deserts 		:[],
-	sandwiches		:[],
-	rolls			:[]
-}
-var cur = "";
+	rows = data.feed.entry;
+	
+	var cur = "";
 
-rows.forEach(function(item,i,arr){
-	elem 	= item['gsx$меню']['$t'];
-	pr 		= item['gsx$цена']['$t'];
-	com 	= item['gsx$коммент']['$t'];
-	switch(elem.toLowerCase())
-	{
-		case 'салаты:':
-			cur = 'salads';
-			break;
-		case 'закуски:':
-			cur = 'snacks';
-			break;
-		case 'завтраки:':
-			cur = 'breakfest';
-			break;
-		case 'первые блюда:':
-			cur = 'soups';
-			break;
-		case 'вторые блюда:':
-			cur = 'heats';
-			break;
-		case 'гарнир:':
-			cur = 'garnish';
-			break;
-		case 'десерты:':
-			cur = 'deserts';	
-			break;
-		case 'сендвичи:':
-			cur = 'sandwiches';
-			break;
-		case 'роллы:':
-			cur = 'rolls';
-			break;
-		default:
-			break;
+	rows.forEach(function(item,i,arr){
+		elem 	= item['gsx$меню']['$t'];
+		pr 		= item['gsx$цена']['$t'];
+		com 	= item['gsx$коммент']['$t'];
+		id 		= item['gsx$id']['$t'];
+		switch(elem.toLowerCase())
+		{
+			case 'салаты:':
+				cur = 'salads';
+				break;
+			case 'закуски:':
+				cur = 'snacks';
+				break;
+			case 'завтраки:':
+				cur = 'breakfest';
+				break;
+			case 'первые блюда:':
+				cur = 'soups';
+				break;
+			case 'вторые блюда:':
+				cur = 'heats';
+				break;
+			case 'гарнир:':
+				cur = 'garnish';
+				break;
+			case 'десерты:':
+				cur = 'deserts';	
+				break;
+			case 'сендвичи:':
+				cur = 'sandwiches';
+				break;
+			case 'роллы:':
+				cur = 'rolls';
+				break;
+			default:
+				break;
+		}
+
+		if (cur!="" && elem!="" && pr!="")
+		{
+			menu[cur].push({
+				id: id,
+				dishName:elem.charAt(0).toUpperCase() + elem.substr(1),
+				price:pr,
+				comment: com
+			}); 
+		}
+
+
+
+	});
+
+
+
+	for (var cat in menu)
+	{	
+		menu[cat].sort(function(a, b) {
+	    	return a.price - b.price;
+		})
+		menu[cat].forEach(function(item,i,arr){
+			color = item.price>150?"red darken-1":(item.price>100?"orange darken-1":"");
+			$('#'+cat+' .collection').append('<a href="javascript:void(0)" data-position="right"  data-tooltip="'+item.comment+'"  data-cat = "'+cat+'" data-id ="'+item.id+'" data-price="'+item.price+'"  class="collection-item '+(item.comment!=""?'tooltipped':'')+'"><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
+		})
 	}
 
-	if (cur!="" && elem!="" && pr!="")
-	{
-		menu[cur].push({ 
-			dishName:elem,
-			price:pr,
-			comment: com
-		}); 
-	}
+	$('.tooltipped').tooltip({delay: 50});
 
+	var order = $('#order .row #list');
+	var total = $('#order .row #summary');
 
+	var summary = $('#order .row #summary');
+	$('.collection-item').on('click',function(event){
+		$('#order').fadeIn('slow');
+		var test = $(this);
+		order.append('<div class="order_element" data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">'+test.clone().children().remove().end().text()+' (ID = '+test.data().id+' )'+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
+		total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
+		$('.close').unbind('click').on('click',function(){
+			//console.log($(this).parent());
+			$(this).parent().remove();
+			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 
-});
+		});
 
-
-
-for (var cat in menu)
-{	
-	menu[cat].sort(function(a, b) {
-    	return a.price - b.price;
-	})
-	menu[cat].forEach(function(item,i,arr){
-		color = item.price>150?"red darken-1":(item.price>100?"orange darken-1":"");
-		$('#'+cat+' .collection').append('<a href="javascript:void(0)" data-position="right"  data-tooltip="'+item.comment+'"  data-cat = "'+cat+'" data-id ="'+i+'" data-price="'+item.price+'"  class="collection-item '+(item.comment!=""?'tooltipped':'')+'"><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
-	})
-}
-$('.tooltipped').tooltip({delay: 50});
-
-var order = $('#order .row #list');
-var total = $('#order .row #summary');
-
-var summary = $('#order .row #summary');
-$('.collection-item').on('click',function(event){
-	$('#order').fadeIn('slow');
-	var test = $(event.target);
-
-	order.append('<div class="order_element" id="el'+(ii++)+'"><div class=" col s8 ">'+test.clone().children().remove().end().text()+': </div><div class=" col s4 ">'+test.data().price+'</div></div>');
-	total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
-
-	})	
+		$('.refresh').on('click',function(){
+			cat = $(this).parent().data().cat;
+			el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
+			$(this).parent().find('.dishprice').html(el.price);
+			$(this).parent().find('.dishname').html(el.dishName + ' (ID = '+el.id+')');
+		});
+	});	
 });
 
 
