@@ -57,7 +57,7 @@ function calcPrice(order){
 			el = menu[item][Math.floor((Math.random() * menu[item].length))];
 			var order = $('#order .row #list');
 			var total = $('#order .row #summary');
-			order.append('<div class="order_element" data-cat="'+item+'" data-id="'+el.id+'"><div class="col s8 dishname">'+el.dishName+' (ID = '+el.id+'): </div><div class="col s2 dishprice">'+el.price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
+			order.append('<div class="order_element" data-cat="'+item+'" data-id="'+el.id+'"><div class="col s8 dishname">(ID = '+el.id+') '+el.dishName+': </div><div class="col s2 dishprice">'+el.price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
 			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 			$('.close').unbind('click').on('click',function(){
 				//console.log($(this).parent());
@@ -165,7 +165,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 	$('.collection-item').on('click',function(event){
 		$('#order').fadeIn('slow');
 		var test = $(this);
-		order.append('<div class="order_element" data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">'+test.clone().children().remove().end().text()+' (ID = '+test.data().id+')'+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
+		order.append('<div class="order_element" data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">(ID = '+test.data().id+') '+test.clone().children().remove().end().text()+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
 		total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 		$('.close').unbind('click').on('click',function(){
 			//console.log($(this).parent());
@@ -178,7 +178,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 			cat = $(this).parent().data().cat;
 			el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
 			$(this).parent().find('.dishprice').html(el.price);
-			$(this).parent().find('.dishname').html(el.dishName + ' (ID = '+el.id+')');
+			$(this).parent().find('.dishname').html('(ID = '+el.id+') ' + el.dishName);
 		});
 	});	
 });
