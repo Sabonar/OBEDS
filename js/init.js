@@ -41,7 +41,7 @@ function calcPrice(order){
  	$('.podnos').on('click',function(){
 		CopyToClipboard('highlight');
 		Materialize.toast('Скопировано в буфер обмена :-)', 1500)
-
+		$('#form').submit();
 	});
 	$('.delete_all').on('click',function(){
 		$('#list').html('');
@@ -80,7 +80,10 @@ function calcPrice(order){
 	});
 
 
-	
+	$('#form').submit(function() {
+        postToGoogle();
+        return false;
+    });
 
 
 });
@@ -96,6 +99,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 		pr 		= item['gsx$цена']['$t'];
 		com 	= item['gsx$коммент']['$t'];
 		id 		= item['gsx$id']['$t'];
+		count	= item['gsx$кол']['$t'];	
 		switch(elem.toLowerCase())
 		{
 			case 'салаты:':
@@ -135,7 +139,8 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 				id: id,
 				dishName:elem.charAt(0).toUpperCase() + elem.substr(1),
 				price:pr,
-				comment: com
+				comment: com,
+				count: count
 			}); 
 		}
 
@@ -152,7 +157,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 		})
 		menu[cat].forEach(function(item,i,arr){
 			color = item.price>150?"red darken-1":(item.price>100?"orange darken-1":"");
-			$('#'+cat+' .collection').append('<a href="javascript:void(0)" data-position="right"  data-tooltip="'+item.comment+'"  data-cat = "'+cat+'" data-id ="'+item.id+'" data-price="'+item.price+'"  class="collection-item '+(item.comment!=""?'tooltipped':'')+'"><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
+			$('#'+cat+' .collection').append('<a href="javascript:void(0)" data-position="right"  data-tooltip="'+item.comment+'"  data-cat = "'+cat+'" data-id ="'+item.id+'" data-price="'+item.price+'"  class="collection-item '+(item.comment!=""?'tooltipped':'')+'"><span class ="layer_count" style = "background-color:rgba(255,222,173,'+item.count/100+');" ></span><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
 		})
 	}
 
@@ -165,7 +170,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 	$('.collection-item').on('click',function(event){
 		$('#order').fadeIn('slow');
 		var test = $(this);
-		order.append('<div class="order_element" data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">(ID = '+test.data().id+') '+test.clone().children().remove().end().text()+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
+		order.append('<div class="order_element"  data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">(ID = '+test.data().id+') '+test.clone().children().remove().end().text()+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
 		total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 		$('.close').unbind('click').on('click',function(){
 			//console.log($(this).parent());
@@ -186,3 +191,23 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 
 
 
+function postToGoogle() {
+$('.order_element').each(function(){
+	$.ajax({
+    url: "https://docs.google.com/forms/d/1FD-sLN3GlU9zx4ES4thcAO0o9W0cD5rpaDFsc7yagdw/formResponse",
+    data: {"entry.743518435": $(this).data().id, "entry.1865878543": 'test'},
+    type: "POST",
+    dataType: "xml",
+    statusCode: {
+        0: function() {
+            //Success message
+        },
+        200: function() {
+            //Success Message
+        }
+    }
+	});
+})
+
+}
+             

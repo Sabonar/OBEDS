@@ -102,7 +102,7 @@ body{
     
 .collection{
   overflow-y: scroll;
-  max-height: 850px;
+  max-height: 700px;
 }
 ::-webkit-scrollbar {
 
@@ -195,4 +195,12 @@ body{
 .random_all:hover{
   background-color: rgba(0, 255, 0, 0.2);
   border-radius: 32px;
+}
+.layer_count{
+    //background-color: rgba(255,0,0,1);
+    position: absolute;
+    left: 0;
+    width: 10px;
+    height: 42px;
+    transform: translateY(-25%);
 }
