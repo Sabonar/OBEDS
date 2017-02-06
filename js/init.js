@@ -33,7 +33,7 @@ var menu = {
 function calcPrice(order){
 	var total = 0;
 	$(order).find('.dishprice').map(function(){total +=parseInt(this.textContent); return parseInt(this.textContent);});
-	if (total == 0)	$('#summary').html('');
+	if (total == 0)	$('.delete_all').click();
 	return total;
 }
 
@@ -60,7 +60,6 @@ function calcPrice(order){
 			order.append('<div class="order_element" data-cat="'+item+'" data-id="'+el.id+'"><div class="col s8 dishname">(ID = '+el.id+') '+el.dishName+': </div><div class="col s2 dishprice">'+el.price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
 			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 			$('.close').unbind('click').on('click',function(){
-				//console.log($(this).parent());
 				$(this).parent().remove();
 				total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 
@@ -70,7 +69,8 @@ function calcPrice(order){
 				cat = $(this).parent().data().cat;
 				el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
 				$(this).parent().find('.dishprice').html(el.price);
-				$(this).parent().find('.dishname').html(el.dishName);
+				$(this).parent().find('.dishname').html('(ID = '+el.id+')' + el.dishName);
+				total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 			});
 
 
@@ -156,7 +156,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 		})
 	}
 
-	$('.tooltipped').tooltip({delay: 50});
+	$('.tooltipped').tooltip({delay: 0});
 
 	var order = $('#order .row #list');
 	var total = $('#order .row #summary');
@@ -179,6 +179,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 			el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
 			$(this).parent().find('.dishprice').html(el.price);
 			$(this).parent().find('.dishname').html('(ID = '+el.id+') ' + el.dishName);
+			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 		});
 	});	
 });
