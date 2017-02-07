@@ -1,4 +1,5 @@
 function CopyToClipboard(start) {
+	window.getSelection().removeAllRanges(); 	
 if (document.selection) { 
     var range = document.body.createTextRange();
     range.moveToElementText(document.getElementById(start));
@@ -69,7 +70,7 @@ function calcPrice(order){
 				cat = $(this).parent().data().cat;
 				el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
 				$(this).parent().find('.dishprice').html(el.price);
-				$(this).parent().find('.dishname').html('(ID = '+el.id+')' + el.dishName);
+				$(this).parent().find('.dishname').html('(ID = '+el.id+')' + el.dishName + ':');
 				total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 			});
 
@@ -183,7 +184,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 			cat = $(this).parent().data().cat;
 			el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
 			$(this).parent().find('.dishprice').html(el.price);
-			$(this).parent().find('.dishname').html('(ID = '+el.id+') ' + el.dishName);
+			$(this).parent().find('.dishname').html('(ID = '+el.id+') ' + el.dishName + ":");
 			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
 		});
 	});	
