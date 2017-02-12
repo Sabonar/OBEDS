@@ -1,3 +1,5 @@
+
+
 function CopyToClipboard(start) {
 	window.getSelection().removeAllRanges(); 	
 if (document.selection) { 
@@ -39,6 +41,13 @@ function calcPrice(order){
 }
 
  $(document).ready(function(){
+
+
+
+
+
+
+
  	$('.podnos').on('click',function(){
 		CopyToClipboard('highlight');
 		Materialize.toast('Скопировано в буфер обмена :-)', 1500)
