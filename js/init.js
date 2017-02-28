@@ -112,14 +112,15 @@ $(document).ready(function(){
 
 	$('.previous').on('click',function(){
 		
-		previous_obed = JSON.parse(getCookie('obed'));
-		console.log(previous_obed);
+		previous_obed = getCookie('obed');
+		//console.log(previous_obed);
 		if (previous_obed == undefined || previous_obed.length == 0)
 		{
 			Materialize.toast('Пока нет информации о предыдущем обеде', 1500);
 		}
 		else
 		{
+			previous_obed = JSON.parse(previous_obed);
 			$('.delete_all').click();
 			previous_obed.forEach(function(item){
 				addInOrder(item.cat,item.id);
