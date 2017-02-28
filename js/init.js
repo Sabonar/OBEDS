@@ -1,5 +1,3 @@
-
-
 function CopyToClipboard(start) {
 	window.getSelection().removeAllRanges(); 	
 if (document.selection) { 
@@ -32,6 +30,8 @@ var menu = {
 		sandwiches		:[],
 		rolls			:[]
 	};
+var order;
+var total;
 
 function calcPrice(order){
 	var total = 0;
@@ -40,55 +40,96 @@ function calcPrice(order){
 	return total;
 }
 
- $(document).ready(function(){
+
+function addInOrder(cat,id)
+{
+	console.log(cat + " " + id);
+	console.log(menu[cat]);
+	el = menu[cat].filter(function(item){
+		// console.log(item.id + " = " + id);
+		return item.id == id;
+	})[0];
+	// console.log(el);
+	order.append('<div class="order_element" data-cat="'+cat+'" data-id="'+el.id+'"><div class="col s8 dishname">(ID = '+el.id+') '+el.dishName+': </div><div class="col s2 dishprice">'+el.price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
+	total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
+
+}
+
+function bindButtons()
+{
+
+	$('.close').unbind('click').on('click',function(){
+		$(this).parent().remove();
+		total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
+
+	});
+
+	$('.refresh').on('click',function(){
+		cat = $(this).parent().data().cat;
+		el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
+		$(this).parent().find('.dishprice').html(el.price);
+		$(this).parent().find('.dishname').html('(ID = '+el.id+') ' + el.dishName + ':');
+		total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
+	});
+}
 
 
+// возвращает cookie с именем name, если есть, если нет, то undefined
+function getCookie(name) {
+	var matches = document.cookie.match(new RegExp(
+		"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+	));
+	return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
+$(document).ready(function(){
 
-
+	order = $('#order .row #list');
+	total = $('#order .row #summary');
 
 
  	$('.podnos').on('click',function(){
 		CopyToClipboard('highlight');
-		Materialize.toast('Скопировано в буфер обмена :-)', 1500)
+		Materialize.toast('Скопировано в буфер обмена :-)', 1500);
 		$('#form').submit();
 	});
+
 	$('.delete_all').on('click',function(){
 		$('#list').html('');
 		$('#summary').html('');
 		//$('#order').fadeOut('slow');
 	});
-	$('.random_all').on('click',function(){
 
+	$('.random_all').on('click',function(){
 		$('.delete_all').click();
 		var cats = ['salads','soups','heats','garnish'];
 		cats.forEach(function(item){
-			el = menu[item][Math.floor((Math.random() * menu[item].length))];
-			el = menu[item][Math.floor((Math.random() * menu[item].length))];
-			var order = $('#order .row #list');
-			var total = $('#order .row #summary');
-			order.append('<div class="order_element" data-cat="'+item+'" data-id="'+el.id+'"><div class="col s8 dishname">(ID = '+el.id+') '+el.dishName+': </div><div class="col s2 dishprice">'+el.price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
-			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
-			$('.close').unbind('click').on('click',function(){
-				$(this).parent().remove();
-				total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
-
-			});
-
-			$('.refresh').on('click',function(){
-				cat = $(this).parent().data().cat;
-				el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
-				$(this).parent().find('.dishprice').html(el.price);
-				$(this).parent().find('.dishname').html('(ID = '+el.id+')' + el.dishName + ':');
-				total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
-			});
-
-
+			addInOrder(item,menu[item][Math.floor((Math.random() * menu[item].length))].id);
 		});
-		
-		
+		bindButtons();		
 	});
 
+
+	$('.previous').on('click',function(){
+		
+		previous_obed = JSON.parse(getCookie('obed'));
+		console.log(previous_obed);
+		if (previous_obed == undefined || previous_obed.length == 0)
+		{
+			Materialize.toast('Пока нет информации о предыдущем обеде', 1500);
+		}
+		else
+		{
+			$('.delete_all').click();
+			previous_obed.forEach(function(item){
+				addInOrder(item.cat,item.id);
+			});
+			bindButtons();	
+
+		}
+
+
+	});
 
 	$('#form').submit(function() {
         postToGoogle();
@@ -180,44 +221,37 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 	$('.collection-item').on('click',function(event){
 		$('#order').fadeIn('slow');
 		var test = $(this);
-		order.append('<div class="order_element"  data-cat="'+test.data().cat+'" data-id  = "'+test.data().id+'"><div class="col s8 dishname">(ID = '+test.data().id+') '+test.clone().children().remove().end().text()+': </div><div class="col s2 dishprice">'+test.data().price+'</div><div class ="col s1 refresh"></div><div class ="col s1 close"></div></div>');
-		total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
-		$('.close').unbind('click').on('click',function(){
-			//console.log($(this).parent());
-			$(this).parent().remove();
-			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
-
-		});
-
-		$('.refresh').on('click',function(){
-			cat = $(this).parent().data().cat;
-			el = menu[cat][Math.floor((Math.random() * menu[cat].length))];
-			$(this).parent().find('.dishprice').html(el.price);
-			$(this).parent().find('.dishname').html('(ID = '+el.id+') ' + el.dishName + ":");
-			total.html('<div class=" col s8 ">Итого: </div><div class=" col s4 ">'+calcPrice(order)+'</div>');
-		});
+		addInOrder(test.data().cat,test.data().id);
+		bindButtons();
 	});	
 });
 
 
 
 function postToGoogle() {
-$('.order_element').each(function(){
-	$.ajax({
-    url: "https://docs.google.com/forms/d/1FD-sLN3GlU9zx4ES4thcAO0o9W0cD5rpaDFsc7yagdw/formResponse",
-    data: {"entry.743518435": $(this).data().id, "entry.1865878543": 'test'},
-    type: "POST",
-    dataType: "xml",
-    statusCode: {
-        0: function() {
-            //Success message
-        },
-        200: function() {
-            //Success Message
-        }
-    }
+	var cook_data = [];
+	var date = new Date;
+	date.setDate(date.getDate() + 7);
+	
+	$('.order_element').each(function(){
+		cook_data.push($(this).data());
+		$.ajax({
+	    url: "https://docs.google.com/forms/d/1FD-sLN3GlU9zx4ES4thcAO0o9W0cD5rpaDFsc7yagdw/formResponse",
+	    data: {"entry.743518435": $(this).data().id, "entry.1865878543": 'test'},
+	    type: "POST",
+	    dataType: "xml",
+	    statusCode: {
+	        0: function() {
+	            //Success message
+	        },
+	        200: function() {
+	            //Success Message
+	        }
+	    }
+		});
 	});
-})
+
+	document.cookie = "obed="+JSON.stringify(cook_data)+"; path=/; expires=" + date.toUTCString();
 
 }
              

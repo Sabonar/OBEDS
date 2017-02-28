@@ -187,13 +187,26 @@ body{
   margin: 0 auto;
   margin-bottom: 12px;
 }
-
+.previous{
+  width: 64px;
+  cursor: pointer; 
+  background-image: url(../img/previous.png);
+  background-repeat: no-repeat;
+  height: 64px;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-bottom: 12px;
+}
 .delete_all:hover{
   background-color: rgba(255, 0, 0, 0.2);
   border-radius: 32px;
 }
 .random_all:hover{
   background-color: rgba(0, 255, 0, 0.2);
+  border-radius: 32px;
+}
+.previous:hover{
+  background-color: rgba(0, 0, 255, 0.2);
   border-radius: 32px;
 }
 .layer_count{
