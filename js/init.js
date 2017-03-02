@@ -151,7 +151,9 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 		pr 		= item['gsx$цена']['$t'];
 		com 	= item['gsx$коммент']['$t'];
 		id 		= item['gsx$id']['$t'];
-		count	= item['gsx$кол']['$t'];	
+		count	= item['gsx$кол']['$t'];
+		//console.log(item['gsx$наличие']['$t']);
+		stock 	= item['gsx$наличие']['$t'].trim()=='в наличии'?1:0;	
 		switch(elem.toLowerCase())
 		{
 			case 'салаты:':
@@ -192,7 +194,9 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 				dishName:elem.charAt(0).toUpperCase() + elem.substr(1),
 				price:pr,
 				comment: com,
-				count: count
+				count: count,
+				stock: stock
+
 			}); 
 		}
 
@@ -208,8 +212,9 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 	    	return a.price - b.price;
 		})
 		menu[cat].forEach(function(item,i,arr){
+			console.log(item.stock);
 			color = item.price>150?"red darken-1":(item.price>100?"orange darken-1":"");
-			$('#'+cat+' .collection').append('<a href="javascript:void(0)" data-position="right"  data-tooltip="'+item.comment+'"  data-cat = "'+cat+'" data-id ="'+item.id+'" data-price="'+item.price+'"  class="collection-item '+(item.comment!=""?'tooltipped':'')+'"><span class ="layer_count" style = "background-color:rgba(255,222,173,'+item.count/100+');" ></span><span class="new badge '+color+' ">'+item.price+'</span>'+item.dishName+'</a>');
+			$('#'+cat+' .collection').append('<a  href="javascript:void(0)" data-position="right"  data-tooltip="'+item.comment+'"  data-cat = "'+cat+'" data-id ="'+item.id+'" data-price="'+item.price+'"  class="collection-item '+(item.stock?'':'disabled_item')+''+(item.comment!=""?'tooltipped':'')+'"><span class ="layer_count" style = "background-color:rgba(255,222,173,'+item.count/100+');" ></span><span class="new badge '+(item.stock?color:'disabled_item')+' ">'+item.price+'</span>'+item.dishName+'</a>');
 		})
 	}
 
@@ -220,10 +225,18 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/1-grygMa0PORQQC89bZbatam9b
 
 	var summary = $('#order .row #summary');
 	$('.collection-item').on('click',function(event){
-		$('#order').fadeIn('slow');
-		var test = $(this);
-		addInOrder(test.data().cat,test.data().id);
-		bindButtons();
+		if ($(this).hasClass('disabled_item'))
+		{
+			Materialize.toast('Эта позиция временно недоступна ):', 1500);
+		}
+		else
+		{
+			$('#order').fadeIn('slow');
+			var test = $(this);
+			addInOrder(test.data().cat,test.data().id);
+			bindButtons();
+		}
+		
 	});	
 });
 

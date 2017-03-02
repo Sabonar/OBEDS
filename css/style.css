@@ -217,3 +217,8 @@ body{
     height: 42px;
     transform: translateY(-25%);
 }
+.disabled_item
+{
+  background-color: rgba(231, 231, 231, 0.38)!important;
+  color:grey!important;
+}
