@@ -114,14 +114,19 @@
 				});
 
 			}
-			console.log(menu);
 			var output = " <table class ='highlight bordered'> <thead> <tr> <th data-field='id'>ID</th> <th data-field='count'>Кол-во</th>  </tr></thead> <tbody>";
+			var sum = 0;
 			for (var i in menu)
 			{	
 				output+="<tr>";
 				output+="<td>" + i + "</td><td>" + menu[i] + "</td>";
 				output+="</tr>";
+				sum+=menu[i];
 			}
+			output+="<tr>";
+			output+="<td style = 'background-color:rgba(170, 229, 196, 0.42);'><b>Итого</b></td><td  style = 'background-color:rgba(170, 229, 196, 0.42);'><b>" + sum + "</b></td>";
+			output+="</tr>";
+
 			output += "<table>";
 
 			$('#textarea2').html(output);
