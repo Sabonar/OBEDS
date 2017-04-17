@@ -7,18 +7,27 @@
 	<title>Obed</title>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="css/materialize.min.css">
-	<link rel="stylesheet" href="css/style.css?v=8">
+	<link rel="stylesheet" href="css/style.css?v=9">
 	<link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 </head>
 
 <body>
-	<nav class="white" role="navigation">
-		<div class="nav-wrapper container"> <a id="logo-container" href="#" class="brand-logo">Выбиралка™</a> <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a> </div>
-	</nav>
-	<div class="container main">
-		<div class="row">
+<nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">Выбиралка™</a>
+      <ul class="right hide-on-med-and-down">
+      	<li><a id = "menu_link" style="color: #656d78;" href="#">Меню</a></li>
+        <li><a id = "history_link" style="color: #656d78;" href="#">История заказов</a></li>
+         <li><a id = "" href="#">Data</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<div class="container main">
+	<div class="row">
+		<div id="menu">
 			<div class="col s2">
 				<ul id="tabs" class="tabs">
 					<li id="tabs_title" class="tab disabled"><a href="javascript:void(0)">Категории</a></li>
@@ -58,28 +67,32 @@
 					<div class="collection"></div>
 				</div>
 			</div>
-			<div class="col s3">
-				<div id="order">
-					<div class="row">
-						<div class="col s4">
-							<div class="delete_all"></div>
-						</div>
-						<div class="col s4">
-							<div class="random_all"></div>
-						</div>
-						<div class="col s4">
-							<div class="previous"></div>
-						</div>
+		</div>
+		<div id ="history" class="history_container col s9"></div>
+		<div class="col s3">
+			<div id="order">
+				<div class="row">
+					<div class="col s4">
+						<div class="delete_all"></div>
 					</div>
-					<div id="highlight" class="row">
-						<div id="list"></div>
-						<div id="summary"></div>
+					<div class="col s4">
+						<div class="random_all"></div>
 					</div>
-					<form id="form" class="podnos" target="_self" onsubmit="" action=""><img src="img/hand.png"></div></form>
+					<div class="col s4">
+						<div class="previous"></div>
+					</div>
+				</div>
+				<div id="highlight" class="row">
+					<div id="list"></div>
+					<div id="summary"></div>
+				</div>
+				<form id="form" class="podnos" target="_self" onsubmit="" action=""><img src="img/hand.png"></form>
 			</div>
 		</div>
 	</div>
-	<script src="js/init.js?v=6"></script>
+</div>
+
+<script src="js/init.js?v=8"></script>
 </body>
 
 </html>
